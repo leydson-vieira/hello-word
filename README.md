@@ -1,4 +1,4 @@
 # hello-word
-my first repom
+my first repo
 
 :D
