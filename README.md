@@ -1,4 +1,3 @@
-# hello-word
-my first repo
+# Repositório de Scripts 
 
-:D
+Destinado a armazenar scripts usuais no dia-a-dia.
