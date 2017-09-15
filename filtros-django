@@ -1,0 +1,28 @@
+@staticmethod
+    def get_recursos_queryset(colab_id, tipo, familia, ct, order_by='descricao', pesquisa='' ):
+        ''' Capta a listagem dos recursos cadastrados do sistema em formato de queryset
+        com filtros
+        '''
+        from apps.pdi.models.colab_autodesenvolvimento import ModelAutodesenvolvimento
+        objs = ModelAutodesenvolvimento.objects.filter(
+            colab_id=colab_id
+        ).values('recurso_id')
+        obj_ids = []
+        for obj in objs:
+            obj_ids.append(obj['recurso_id'])
+
+        qs = ModelRecurso.objects.filter(
+            (
+               Q(descricao__icontains=pesquisa) |
+               Q(sinopse__icontains=pesquisa)
+            ) & ~Q(pk__in=obj_ids),
+            excluido=False,
+        )
+        if tipo:
+            qs = qs.filter(tipo_id=tipo)
+        if familia:
+            qs = qs.filter(recurso_familia_id=familia)
+        if ct:
+            qs = qs.filter(cts__ct__id=ct)
+
+        return qs.order_by(order_by)
